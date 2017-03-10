@@ -1,11 +1,26 @@
 var app = angular.module('app')
 
-app.controller('LoginCtrl', ['$scope', '$state', 'authSrv', function ($scope, $state, authSrv) {
-  $scope.form = {}
+app.controller('LoginCtrl', [
+  '$scope',
+  '$state',
+  'authSrv',
+  'isAdmin',
+  function ($scope, $state, authSrv, isAdmin) {
+    if (isAdmin) {
+      return $state.go('root.base.postList', {
+        location: 'replace'
+      })
+    }
 
-  $scope.handleFormSubmit = function () {
-    authSrv.login($scope.form.login, $scope.form.password).then(function () {
-      $state.go('root.base.postList')
-    })
+    $scope.form = {
+      login: '',
+      password: ''
+    }
+
+    $scope.handleFormSubmit = function () {
+      authSrv.login($scope.form.login, $scope.form.password).then(function () {
+        $state.go('root.base.postList')
+      })
+    }
   }
-}])
+])
