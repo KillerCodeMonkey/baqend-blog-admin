@@ -4,23 +4,33 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
   $urlRouterProvider.otherwise('/login')
 
   $stateProvider
-    .state('login', {
-      url: '/login',
+    .state('root', {
+      url: '/',
+      abstract: true,
+      template: '<ui-view></ui-view>',
+      resolve: {
+        dbConnected: ['$window', function ($window) {
+          return $window.DB.connect('blog')
+        }]
+      }
+    })
+    .state('root.login', {
+      url: 'login',
       controller: 'LoginCtrl',
       templateUrl: './app/login/login.controller.html'
     })
-    .state('base', {
+    .state('root.base', {
       abstract: true,
-      url: '/auth',
+      url: 'auth',
       templateUrl: './app/base.controller.html',
       controller: 'BaseCtrl'
     })
-    .state('base.postList', {
+    .state('root.base.postList', {
       url: '/posts',
       controller: 'PostListCtrl',
       templateUrl: './app/post-list/post-list.controller.html'
     })
-    .state('base.postDetail', {
+    .state('root.base.postDetail', {
       url: '/posts/:slug',
       controller: 'PostDetailCtrl',
       templateUrl: './app/post-detail/post-detail.controller.html'

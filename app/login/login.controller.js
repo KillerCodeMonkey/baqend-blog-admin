@@ -5,7 +5,7 @@ app.controller('LoginCtrl', ['$scope', '$state', 'authSrv', function ($scope, $s
 
   $scope.handleFormSubmit = function () {
     authSrv.login($scope.form.login, $scope.form.password).then(function () {
-      $state.go('base.postList')
+      $state.go('root.base.postList')
     })
   }
 }])
